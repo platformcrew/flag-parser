@@ -18,13 +18,13 @@ Each flag produces a step output with the value `"true"` or `"false"`.
   uses: platformcrew/flag-parser@v1
   with:
     flags: |
-      use-depot-runner: "[use-depot-runner]"
+      example-flag: "[example-flag]"
       skip-tests: "[skip-tests]"
       deploy-prod: "DEPLOY_PROD"
     # text: optional — defaults to the commit message on push events
 
 - name: Use depot runner
-  if: steps.flags.outputs.use-depot-runner == 'true'
+  if: steps.flags.outputs.example-flag == 'true'
   run: echo "Depot runner is enabled"
 
 - name: Skip tests
@@ -34,10 +34,10 @@ Each flag produces a step output with the value `"true"` or `"false"`.
 
 ## Inputs
 
-| Input | Required | Default | Description |
-|-------|----------|---------|-------------|
-| `flags` | Yes | — | Multiline flag definitions (see format below) |
-| `text` | No | `''` | Text to search. Falls back to the commit message if empty. |
+| Input   | Required | Default | Description                                                |
+| ------- | -------- | ------- | ---------------------------------------------------------- |
+| `flags` | Yes      | —       | Multiline flag definitions (see format below)              |
+| `text`  | No       | `''`    | Text to search. Falls back to the commit message if empty. |
 
 ### `flags` format
 
@@ -53,8 +53,8 @@ flag-name: "search-string"
 
 ```yaml
 flags: |
-  # Enable depot runner when commit message contains [use-depot-runner]
-  use-depot-runner: "[use-depot-runner]"
+  # Enable depot runner when commit message contains [example-flag]
+  example-flag: "[example-flag]"
 
   # Skip CI tests
   skip-tests: "[skip-tests]"
@@ -65,8 +65,8 @@ flags: |
 One output per flag, named after the flag. Value is always `"true"` or `"false"`.
 
 ```yaml
-steps.flags.outputs.use-depot-runner  # "true" or "false"
-steps.flags.outputs.skip-tests        # "true" or "false"
+steps.flags.outputs.example-flag  # "true" or "false"
+steps.flags.outputs.skip-tests    # "true" or "false"
 ```
 
 ## Commit message fallback
@@ -82,7 +82,7 @@ Example using the PR body as the text source:
   with:
     text: ${{ github.event.pull_request.body }}
     flags: |
-      use-depot-runner: "[use-depot-runner]"
+      example-flag: "[example-flag]"
 ```
 
 ## Local smoke test
@@ -91,11 +91,11 @@ Example using the PR body as the text source:
 output=$(mktemp)
 docker build -t flag-parser:test .
 docker run --rm \
-  -e INPUT_FLAGS='use-depot-runner: "[use-depot-runner]"' \
-  -e INPUT_TEXT='build with [use-depot-runner] enabled' \
+  -e INPUT_FLAGS='example-flag: "[example-flag]"' \
+  -e INPUT_TEXT='build with [example-flag] enabled' \
   -e GITHUB_OUTPUT=/github/output \
   -v "$output:/github/output" \
   flag-parser:test
 cat "$output"
-# use-depot-runner=true
+# example-flag=true
 ```
