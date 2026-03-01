@@ -23,9 +23,9 @@ Each flag produces a step output with the value `"true"` or `"false"`.
       deploy-prod: "DEPLOY_PROD"
     # text: optional — defaults to the commit message on push events
 
-- name: Use depot runner
+- name: Check example-flag
   if: steps.flags.outputs.example-flag == 'true'
-  run: echo "Depot runner is enabled"
+  run: echo "example-flag is enabled"
 
 - name: Skip tests
   if: steps.flags.outputs.skip-tests == 'true'
@@ -53,7 +53,7 @@ flag-name: "search-string"
 
 ```yaml
 flags: |
-  # Enable depot runner when commit message contains [example-flag]
+  # Enable example-flag runner when commit message contains [example-flag]
   example-flag: "[example-flag]"
 
   # Skip CI tests
