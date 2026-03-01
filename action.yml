@@ -1,0 +1,37 @@
+name: 'Flag Parser'
+description: 'Parse boolean flags from text (or commit message) using key-value pattern matching'
+author: 'platformcrew'
+
+inputs:
+  text:
+    description: >
+      The text to search for flags. If empty or not provided,
+      falls back to the GitHub commit message from GITHUB_EVENT_PATH
+      (available on push events).
+    required: false
+    default: ''
+  flags:
+    description: |
+      Multiline flag definitions. Each line must follow the format:
+        flag-name: "search-string"
+
+      Example:
+        use-depot-runner: "[use-depot-runner]"
+        skip-tests: "[skip-tests]"
+        deploy-prod: "DEPLOY_PROD"
+
+      The search is a literal, case-sensitive substring match.
+      Lines starting with '#' are treated as comments and ignored.
+    required: true
+
+# Outputs are dynamic (one per user-defined flag name) and cannot be enumerated
+# statically. They are written to $GITHUB_OUTPUT by the binary and are available
+# as steps.<step-id>.outputs.<flag-name> with values "true" or "false".
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+
+branding:
+  icon: 'flag'
+  color: 'blue'
