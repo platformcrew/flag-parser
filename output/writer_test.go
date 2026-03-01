@@ -56,13 +56,13 @@ func TestWriteOutputs(t *testing.T) {
 		f.Close()
 		setEnv(t, "GITHUB_OUTPUT", f.Name())
 
-		err := WriteOutputs([]parser.FlagResult{{Name: "use-depot-runner", Found: true, SearchString: "[use-depot-runner]"}})
+		err := WriteOutputs([]parser.FlagResult{{Name: "example-flag", Found: true, SearchString: "[example-flag]"}})
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
 		got := readFile(t, f.Name())
-		if got != "use-depot-runner=true\n" {
-			t.Errorf("got %q, want %q", got, "use-depot-runner=true\n")
+		if got != "example-flag=true\n" {
+			t.Errorf("got %q, want %q", got, "example-flag=true\n")
 		}
 	})
 
@@ -87,7 +87,7 @@ func TestWriteOutputs(t *testing.T) {
 		setEnv(t, "GITHUB_OUTPUT", f.Name())
 
 		results := []parser.FlagResult{
-			{Name: "use-depot-runner", Found: true},
+			{Name: "example-flag", Found: true},
 			{Name: "skip-tests", Found: false},
 			{Name: "deploy-prod", Found: true},
 		}
@@ -95,7 +95,7 @@ func TestWriteOutputs(t *testing.T) {
 			t.Fatalf("unexpected error: %v", err)
 		}
 		got := readFile(t, f.Name())
-		want := "use-depot-runner=true\nskip-tests=false\ndeploy-prod=true\n"
+		want := "example-flag=true\nskip-tests=false\ndeploy-prod=true\n"
 		if got != want {
 			t.Errorf("got %q, want %q", got, want)
 		}

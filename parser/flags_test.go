@@ -13,16 +13,16 @@ func TestParseFlagDefinitions(t *testing.T) {
 	}{
 		{
 			name:  "single valid flag",
-			input: `use-depot-runner: "[use-depot-runner]"`,
-			want:  []FlagDef{{Name: "use-depot-runner", SearchString: "[use-depot-runner]"}},
+			input: `example-flag: "[example-flag]"`,
+			want:  []FlagDef{{Name: "example-flag", SearchString: "[example-flag]"}},
 		},
 		{
 			name: "multiple valid flags",
-			input: `use-depot-runner: "[use-depot-runner]"
+			input: `example-flag: "[example-flag]"
 skip-tests: "[skip-tests]"
 deploy-prod: "DEPLOY_PROD"`,
 			want: []FlagDef{
-				{Name: "use-depot-runner", SearchString: "[use-depot-runner]"},
+				{Name: "example-flag", SearchString: "[example-flag]"},
 				{Name: "skip-tests", SearchString: "[skip-tests]"},
 				{Name: "deploy-prod", SearchString: "DEPLOY_PROD"},
 			},
@@ -30,20 +30,20 @@ deploy-prod: "DEPLOY_PROD"`,
 		{
 			name: "blank lines and comments skipped",
 			input: `# this is a comment
-use-depot-runner: "[use-depot-runner]"
+example-flag: "[example-flag]"
 
 # another comment
 skip-tests: "[skip-tests]"`,
 			want: []FlagDef{
-				{Name: "use-depot-runner", SearchString: "[use-depot-runner]"},
+				{Name: "example-flag", SearchString: "[example-flag]"},
 				{Name: "skip-tests", SearchString: "[skip-tests]"},
 			},
 		},
 		{
 			name:  "windows line endings CRLF",
-			input: "use-depot-runner: \"[use-depot-runner]\"\r\nskip-tests: \"[skip-tests]\"",
+			input: "example-flag: \"[example-flag]\"\r\nskip-tests: \"[skip-tests]\"",
 			want: []FlagDef{
-				{Name: "use-depot-runner", SearchString: "[use-depot-runner]"},
+				{Name: "example-flag", SearchString: "[example-flag]"},
 				{Name: "skip-tests", SearchString: "[skip-tests]"},
 			},
 		},
@@ -64,27 +64,27 @@ skip-tests: "[skip-tests]"`,
 		},
 		{
 			name:    "missing colon separator",
-			input:   `use-depot-runner "[use-depot-runner]"`,
+			input:   `example-flag "[example-flag]"`,
 			wantErr: true,
 		},
 		{
 			name:    "unquoted value",
-			input:   `use-depot-runner: [use-depot-runner]`,
+			input:   `example-flag: [example-flag]`,
 			wantErr: true,
 		},
 		{
 			name:    "only opening quote",
-			input:   `use-depot-runner: "[use-depot-runner]`,
+			input:   `example-flag: "[example-flag]`,
 			wantErr: true,
 		},
 		{
 			name:    "empty quoted value",
-			input:   `use-depot-runner: ""`,
+			input:   `example-flag: ""`,
 			wantErr: true,
 		},
 		{
 			name:    "duplicate flag name",
-			input:   "use-depot-runner: \"[use-depot-runner]\"\nuse-depot-runner: \"[other]\"",
+			input:   "example-flag: \"[example-flag]\"\nexample-flag: \"[other]\"",
 			wantErr: true,
 		},
 		{
@@ -127,7 +127,7 @@ skip-tests: "[skip-tests]"`,
 
 func TestEvaluateFlags(t *testing.T) {
 	defs := []FlagDef{
-		{Name: "use-depot-runner", SearchString: "[use-depot-runner]"},
+		{Name: "example-flag", SearchString: "[example-flag]"},
 		{Name: "skip-tests", SearchString: "[skip-tests]"},
 	}
 
@@ -138,12 +138,12 @@ func TestEvaluateFlags(t *testing.T) {
 	}{
 		{
 			name:  "both flags found",
-			text:  "deploy [use-depot-runner] and [skip-tests] today",
+			text:  "deploy [example-flag] and [skip-tests] today",
 			found: []bool{true, true},
 		},
 		{
 			name:  "one flag found",
-			text:  "build with [use-depot-runner]",
+			text:  "build with [example-flag]",
 			found: []bool{true, false},
 		},
 		{
@@ -163,7 +163,7 @@ func TestEvaluateFlags(t *testing.T) {
 		},
 		{
 			name:  "substring match works",
-			text:  "prefix[use-depot-runner]suffix",
+			text:  "prefix[example-flag]suffix",
 			found: []bool{true, false},
 		},
 	}

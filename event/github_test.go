@@ -53,13 +53,13 @@ func TestReadCommitMessage(t *testing.T) {
 	})
 
 	t.Run("valid event JSON with commit message", func(t *testing.T) {
-		path := writeEventFile(t, `{"head_commit":{"message":"feat: add depot runner [use-depot-runner]"}}`)
+		path := writeEventFile(t, `{"head_commit":{"message":"feat: add depot runner [example-flag]"}}`)
 		setEnv(t, "GITHUB_EVENT_PATH", path)
 		msg, err := ReadCommitMessage()
 		if err != nil {
 			t.Fatalf("unexpected error: %v", err)
 		}
-		want := "feat: add depot runner [use-depot-runner]"
+		want := "feat: add depot runner [example-flag]"
 		if msg != want {
 			t.Errorf("got %q, want %q", msg, want)
 		}
