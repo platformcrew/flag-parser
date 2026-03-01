@@ -1,0 +1,4 @@
+/flag-parser
+/flag-parser-*
+*.test
+*.out
