@@ -1,6 +1,6 @@
-name: 'Flag Parser'
-description: 'Parse boolean flags from text (or commit message) using key-value pattern matching'
-author: 'platformcrew'
+name: "Flag Parser"
+description: "Parse boolean flags from text (or commit message) using key-value pattern matching"
+author: "platformcrew"
 
 inputs:
   text:
@@ -9,15 +9,14 @@ inputs:
       falls back to the GitHub commit message from GITHUB_EVENT_PATH
       (available on push events).
     required: false
-    default: ''
+    default: ""
   flags:
     description: |
       Multiline flag definitions. Each line must follow the format:
         flag-name: "search-string"
 
       Example:
-        use-depot-runner: "[use-depot-runner]"
-        skip-tests: "[skip-tests]"
+        example-flag: "[example-flag]"
         deploy-prod: "DEPLOY_PROD"
 
       The search is a literal, case-sensitive substring match.
@@ -29,9 +28,9 @@ inputs:
 # as steps.<step-id>.outputs.<flag-name> with values "true" or "false".
 
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: "docker"
+  image: "Dockerfile"
 
 branding:
-  icon: 'flag'
-  color: 'blue'
+  icon: "flag"
+  color: "blue"
