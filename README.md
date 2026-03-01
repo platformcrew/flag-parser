@@ -1,5 +1,7 @@
 # flag-parser
 
+[![CI](https://github.com/platformcrew/flag-parser/actions/workflows/ci.yml/badge.svg)](https://github.com/platformcrew/flag-parser/actions/workflows/ci.yml)
+
 A GitHub Action that parses boolean flags from text using user-defined key-value pattern matching.
 
 ## How it works
