@@ -37,14 +37,14 @@ jobs:
         run: |
           output_file=$(mktemp)
           docker run --rm \
-            -e INPUT_FLAGS='use-depot-runner: "[use-depot-runner]"' \
-            -e INPUT_TEXT='build with [use-depot-runner] enabled' \
+            -e INPUT_FLAGS='example-flag: "[example-flag]"' \
+            -e INPUT_TEXT='build with [example-flag] enabled' \
             -e GITHUB_OUTPUT=/github/output \
             -v "$output_file:/github/output" \
             flag-parser:test
           echo "=== Output file ==="
           cat "$output_file"
-          grep -q "use-depot-runner=true" "$output_file" || (echo "FAIL: expected use-depot-runner=true" && exit 1)
+          grep -q "example-flag=true" "$output_file" || (echo "FAIL: expected example-flag=true" && exit 1)
 
       - name: Smoke test — flag not found
         run: |
@@ -63,12 +63,12 @@ jobs:
         run: |
           output_file=$(mktemp)
           docker run --rm \
-            -e $'INPUT_FLAGS=use-depot-runner: "[use-depot-runner]"\nskip-tests: "[skip-tests]"' \
-            -e 'INPUT_TEXT=deploy with [use-depot-runner]' \
+            -e $'INPUT_FLAGS=example-flag: "[example-flag]"\nskip-tests: "[skip-tests]"' \
+            -e 'INPUT_TEXT=deploy with [example-flag]' \
             -e GITHUB_OUTPUT=/github/output \
             -v "$output_file:/github/output" \
             flag-parser:test
           echo "=== Output file ==="
           cat "$output_file"
-          grep -q "use-depot-runner=true" "$output_file" || (echo "FAIL: expected use-depot-runner=true" && exit 1)
+          grep -q "example-flag=true" "$output_file" || (echo "FAIL: expected example-flag=true" && exit 1)
           grep -q "skip-tests=false" "$output_file" || (echo "FAIL: expected skip-tests=false" && exit 1)
